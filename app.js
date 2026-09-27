@@ -10,12 +10,6 @@ const cardsRouter = require('./routes/cards');
 app.use(usersRouter);
 app.use(cardsRouter);
 
-app.get('/test-error', (req, res, next) => {
-  const error = new Error('Error de prueba');
-
-  next(error);
-});
-
 app.use((req, res) => {
   res.status(404).json({
     message: 'Recurso solicitado no encontrado',
