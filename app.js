@@ -1,4 +1,7 @@
 const express = require('express');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://172.20.240.1:27017/aroundb');
+
 
 const app = express();
 
