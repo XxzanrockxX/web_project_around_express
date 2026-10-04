@@ -40,4 +40,18 @@ router.get('/users/:userId', (req, res) => {
     });
 });
 
+router.post('/users', (req, res) => {
+  console.log(req.body);
+
+  const { name, about, avatar } = req.body;
+
+  User.create({ name, about, avatar })
+    .then((user) => res.status(201).json(user))
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
+      });
+    });
+});
+
 module.exports = router;

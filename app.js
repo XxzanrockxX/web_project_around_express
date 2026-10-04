@@ -1,9 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
+
 mongoose.connect('mongodb://172.20.240.1:27017/aroundb');
 
-
 const app = express();
+
+app.use(express.json());
+
+app.get('/test', (req, res) => {
+  res.json({ message: 'Servidor funcionando' });
+});
 
 const PORT = 3000;
 
