@@ -8,6 +8,14 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '6ac32597d8b185c52cb5b706',
+  };
+
+  next();
+});
+
 app.get('/test', (req, res) => {
   res.json({ message: 'Servidor funcionando' });
 });

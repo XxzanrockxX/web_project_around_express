@@ -23,16 +23,23 @@ router.get('/users/:userId', (req, res) => {
   const { userId } = req.params;
 
   User.findById(userId)
+    .orFail()
     .then((user) => {
-      if (!user) {
+      res.json(user);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(400).json({
+          message: err.message,
+        });
+      }
+
+      if (err.name === 'DocumentNotFoundError') {
         return res.status(404).json({
           message: 'ID de usuario no encontrado',
         });
       }
 
-      res.json(user);
-    })
-    .catch((err) => {
       res.status(500).json({
         message: err.message,
       });
