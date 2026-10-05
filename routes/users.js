@@ -3,7 +3,6 @@ const express = require('express');
 const User = require('../models/user');
 
 const path = require('path');
-
 const fs = require('fs');
 
 const usersPath = path.join(__dirname, '../data/users.json');
@@ -48,7 +47,7 @@ router.post('/users', (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(201).json(user))
     .catch((err) => {
-      res.status(500).json({
+      res.status(400).json({
         message: err.message,
       });
     });

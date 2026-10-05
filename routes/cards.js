@@ -1,23 +1,27 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
-
-const cardsPath = path.join(__dirname, '../data/cards.json');
-
+const Card = require('../models/card');
 const router = express.Router();
 
 router.get('/cards', (req, res) => {
-  fs.readFile(cardsPath, 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).json({
-        message: 'Ha ocurrido un error en el servidor',
+  Card.find({})
+    .then((cards) => res.json(cards))
+    .catch((err) => {
+      res.status(500).json({
+        message: err.message,
       });
-    }
+    });
+});
 
-    const cards = JSON.parse(data);
+router.post('/cards', (req, res) => {
+  const { name, link, owner } = req.body;
 
-    res.json(cards);
-  });
+  Card.create({ name, link, owner })
+    .then((card) => res.status(201).json(card))
+    .catch((err) => {
+      res.status(400).json({
+        message: err.message,
+      });
+    });
 });
 
 module.exports = router;

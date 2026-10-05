@@ -1,4 +1,5 @@
 const express = require('express');
+
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://172.20.240.1:27017/aroundb');
@@ -31,6 +32,18 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🔥 Servidor funcionando en el puerto ${PORT}`);
+const server = app.listen(PORT);
+
+server.on('listening', () => {
+  console.log('🔥 EVENTO LISTENING');
+  console.log('Servidor escuchando:', server.listening);
+});
+
+server.on('error', (err) => {
+  console.log('🔥 EVENTO ERROR');
+  console.log(err);
+});
+
+server.on('close', () => {
+  console.log('🔥 EVENTO CLOSE');
 });
