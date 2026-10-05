@@ -26,3 +26,5 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('user', userSchema);
+
+//crear utils/utils.js para regex y exportar urlRegex, luego importar en models/user.js y models/card.js para usarlo en ambos esquemas.

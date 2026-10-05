@@ -1,63 +1,24 @@
 const express = require('express');
 
-const User = require('../models/user');
-
-const path = require('path');
-const fs = require('fs');
-
-const usersPath = path.join(__dirname, '../data/users.json');
+const {
+  getUsers,
+  getUserById,
+  createUser,
+  updateProfile,
+  updateAvatar,
+} = require('../controllers/users');
 
 const router = express.Router();
 
-router.get('/users', (req, res) => {
-  User.find({})
-    .then((users) => res.json(users))
-    .catch((err) => {
-      res.status(500).json({
-        message: err.message,
-      });
-    });
-});
+router.get('/users', getUsers);
 
-router.get('/users/:userId', (req, res) => {
-  const { userId } = req.params;
+router.get('/users/:userId', getUserById);
 
-  User.findById(userId)
-    .orFail()
-    .then((user) => {
-      res.json(user);
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        return res.status(400).json({
-          message: err.message,
-        });
-      }
+router.post('/users', createUser);
 
-      if (err.name === 'DocumentNotFoundError') {
-        return res.status(404).json({
-          message: 'ID de usuario no encontrado',
-        });
-      }
+router.patch('/users/me', updateProfile);
 
-      res.status(500).json({
-        message: err.message,
-      });
-    });
-});
-
-router.post('/users', (req, res) => {
-  console.log(req.body);
-
-  const { name, about, avatar } = req.body;
-
-  User.create({ name, about, avatar })
-    .then((user) => res.status(201).json(user))
-    .catch((err) => {
-      res.status(400).json({
-        message: err.message,
-      });
-    });
-});
+router.patch('/users/me/avatar', updateAvatar);
 
 module.exports = router;
+
